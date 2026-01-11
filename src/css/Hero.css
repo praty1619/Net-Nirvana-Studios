@@ -1,56 +1,117 @@
+/* --- VARIABLES for easy tweaking --- */
+:root {
+    --primary: #4f46e5;
+    /* Indigo */
+    --primary-dark: #4338ca;
+    --secondary: #ec4899;
+    /* Pink/Violet pop */
+    --text-main: #0f172a;
+    /* Slate 900 */
+    --text-muted: #475569;
+    /* Slate 600 */
+    --bg-light: #f8fafc;
+}
+
 .hero {
     position: relative;
+    min-height: 100vh;
+    /* Full screen height */
     /* width: 100%; */
-    min-height: 85vh;
-    padding: 100px 24px;
     display: flex;
+    align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: linear-gradient(to bottom,
-            #eef2ff 0%,
-            #e6ebff 100%);
+    background-color: var(--bg-light);
+    padding: 0 24px;
 }
 
-.hero::before {
-    content: "";
+/* --- BACKGROUND BLOBS (The "Aurora" Effect) --- */
+/* These replace the linear-gradient for a modern 3D feel */
+.hero-blob {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg,
-            #eef2ff,
-            #e6ebff,
-            #dde3ff,
-            #eef2ff);
-    background-size: 300% 300%;
-    animation: gradientShift 12s ease infinite;
+    border-radius: 50%;
+    filter: blur(80px);
+    /* This creates the soft glow */
+    opacity: 0.6;
     z-index: 0;
+    animation: float 10s infinite ease-in-out;
 }
 
-@keyframes gradientShift {
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: #c7d2fe;
+    /* Soft Indigo */
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: #e9d5ff;
+    /* Soft Purple */
+    animation-delay: 2s;
+}
+
+.blob-3 {
+    top: 40%;
+    left: 40%;
+    width: 300px;
+    height: 300px;
+    background: #fbcfe8;
+    /* Soft Pink */
+    opacity: 0.4;
+    animation-delay: 4s;
+}
+
+@keyframes float {
     0% {
-        background-position: 0% 50%;
+        transform: translate(0, 0) scale(1);
     }
 
-    50% {
-        background-position: 100% 50%;
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
     }
 
     100% {
-        background-position: 0% 50%;
+        transform: translate(0, 0) scale(1);
     }
 }
 
+/* --- GRID OVERLAY (Optional Texture) --- */
+/* Add this to Hero.css */
+
+/* This creates a smooth fade-to-white at the bottom of the Hero */
 .hero::after {
     content: "";
     position: absolute;
-    inset: 0;
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    z-index: 1;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    /* Height of the fade */
+
+    /* Gradient from Transparent -> to -> Services Background Color (#f8fafc) */
+    background: linear-gradient(to bottom, rgba(248, 250, 252, 0) 0%, #f8fafc 100%);
+
+    z-index: 5;
+    /* Sits above the blobs but below the text/buttons if they overlap */
+    pointer-events: none;
+    /* Allows you to click through it if needed */
 }
 
+/* --- CONTENT --- */
 .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     max-width: 900px;
     display: flex;
     flex-direction: column;
@@ -58,100 +119,154 @@
     text-align: center;
 }
 
+/* --- BADGE --- */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    position: relative;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    opacity: 0.4;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* --- TYPOGRAPHY --- */
 .hero-title {
-    font-size: 52px;
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 28px;
-    letter-spacing: -0.02em;
+    font-size: 64px;
+    /* Bigger is better for Hero */
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    letter-spacing: -0.03em;
+}
+
+/* This creates the gradient text effect */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-text {
-    font-size: 18px;
+    font-size: 20px;
+    color: var(--text-muted);
     max-width: 600px;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
+    line-height: 1.6;
 }
 
+/* --- ACTIONS --- */
 .hero-actions {
     display: flex;
     gap: 16px;
     justify-content: center;
 }
 
+/* Common Button Styles */
 .nn-btn {
-    position: relative;
-    padding: 14px 36px;
+    padding: 16px 32px;
     font-size: 16px;
-    font-weight: 500;
-    color: #6366f1;
-    background: #ffffff;
-    border: 1.5px solid #6366f1;
+    font-weight: 600;
     border-radius: 999px;
     cursor: pointer;
-    overflow: hidden;
-    transition:
-        color 0.3s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-/* text layer */
-.nn-btn span {
+    transition: all 0.3s ease;
     position: relative;
-    z-index: 2;
-}
-
-/* magnetic fill layer */
-.nn-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: #6366f1;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s ease;
+    overflow: hidden;
     z-index: 1;
 }
 
-/* hover effects */
-.nn-btn:hover::before {
-    transform: scaleX(1);
-}
-
-.nn-btn:hover {
+/* Primary Button (Filled) */
+.btn-primary {
+    background: var(--text-main);
+    /* Dark dark blue/black */
     color: #ffffff;
-    transform: translateY(-3px);
-    box-shadow:
-        0 6px 0 -4px #e0e7ff,
-        0 10px 0 -4px #c7d2fe,
-        0 14px 0 -4px #6366f1;
+    border: 1px solid transparent;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 }
 
-.hero-badge {
-    display: inline-block;
-    margin-bottom: 16px;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #6366f1;
-    background-color: rgba(99, 102, 241, 0.1);
-    border-radius: 999px;
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+    background: #000;
 }
 
-.hero-network {
-    position: absolute;
-    top: 8%;
-    right: -160px;
-    width: 520px;
-    max-width: 80vw;
-    opacity: 0.1;
-    z-index: 0;
-    pointer-events: none;
-    filter: blur(0.4px);
+/* Secondary Button (Ghost/Outline) */
+.btn-secondary {
+    background: #ffffff;
+    color: var(--text-muted);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: #f8fafc;
+}
+
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
-    .hero-network {
-        display: none;
+    .hero-title {
+        font-size: 42px;
     }
+
+    .hero-text {
+        font-size: 18px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nn-btn {
+        width: 100%;
+    }
+}
+
+.scroll-connector {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--primary), transparent);
+    transform: translateX(-50%);
 }

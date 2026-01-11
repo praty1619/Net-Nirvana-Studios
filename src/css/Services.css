@@ -1,153 +1,214 @@
-.services {
-    position: relative;
-    /* width: 100%; */
-    min-height: 85vh;
-    padding: 100px 24px;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    background: linear-gradient(to bottom,
-            #eef2ff 0%,
-            #e6ebff 100%);
+:root {
+    --primary: #6366f1;
+    --bg-color: #f8fafc;
 }
 
+.services {
+    position: relative;
+    padding: 120px 24px;
+    background-color: var(--bg-color);
+    overflow: hidden;
+    /* TRICK: Pull the section up slightly to cover any white gap from the Hero */
+    margin-top: -2px;
+}
+
+/* --- THE FIX: GRID BACKGROUND --- */
+/* This pattern breaks the "plainness" immediately */
+/* Update this section in Services.css */
 .services::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg,
-            #eef2ff,
-            #e6ebff,
-            #dde3ff,
-            #eef2ff);
-    background-size: 300% 300%;
-    animation: gradientShift 12s ease infinite;
+
+    /* Your existing Grid settings */
+    background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+    opacity: 0.7;
+    z-index: 1;
+    pointer-events: none;
+
+    /* --- THE NEW MAGIC PART --- */
+    /* This creates a "Fade In" mask from the top, and a "Fade Out" at the bottom */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 150px, black 90%, transparent 100%);
+}
+/* --- VIBRANT AURORA BLOBS --- */
+/* Increased opacity so you can actually see them through the glass cards */
+.service-blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(80px);
+    /* Lower blur slightly = stronger color */
     z-index: 0;
+    opacity: 0.8;
+    /* Increased opacity significantly */
+    animation: floatBlob 10s infinite alternate ease-in-out;
 }
 
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    background: #c9d2ff;
+    /* Darker Indigo (Indigo-300) */
+}
 
-    50% {
-        background-position: 100% 50%;
+.blob-2 {
+    bottom: 0%;
+    right: -10%;
+    background: #ffcbe7;
+    /* Darker Pink (Pink-300) */
+}
+
+@keyframes floatBlob {
+    0% {
+        transform: translate(0, 0);
     }
 
     100% {
-        background-position: 0% 50%;
+        transform: translate(40px, -40px);
     }
 }
 
-.services::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    z-index: 1;
-}
-
+/* --- CONTAINER --- */
 .services-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
-    z-index: 2;
-}
-
-.services-title {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 48px;
-    letter-spacing: -0.01em;
-}
-
-.services-grid{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.services-card {
-    --radius: 16px;
-    --pattern-size: 0.4rem;
-
     position: relative;
-    padding: 32px 28px;
-
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-
-    border-radius: var(--radius);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-
-    text-align: left;
-    z-index: 1;
-
-    transform: translateY(-2px);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 10;
+    /* Ensure content sits ON TOP of grid/blobs */
 }
 
-/* white base */
-.services-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: var(--radius);
-    z-index: -1;
+.services-header {
+    text-align: center;
+    margin-bottom: 80px;
 }
 
-/* patterned shadow */
-.services-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    top: 14px;
-    left: 14px;
-
-    border-radius: var(--radius);
-
-    background-image: linear-gradient(45deg,
-            #e5e7ff 25%,
-            #6366f1 25%,
-            #6366f1 50%,
-            #e5e7ff 50%,
-            #e5e7ff 75%,
-            #6366f1 75%,
-            #6366f1 100%);
-
-    background-size: 0.45rem 0.45rem;
-    opacity: 0.35;
-
-    z-index: -2;
+/* --- TYPOGRAPHY --- */
+.services-title {
+    font-size: 64px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
 }
 
-/* hover */
+.services-subtitle {
+    font-size: 18px;
+    color: #64748b;
+    max-width: 550px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* --- GRID LAYOUT --- */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+}
+
+/* --- HIGH-END CARDS --- */
+.services-card {
+    position: relative;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    /* Slightly more transparent */
+    backdrop-filter: blur(20px);
+    /* Strong blur for glass feel */
+    -webkit-backdrop-filter: blur(20px);
+
+    /* The Magic Border: A subtle gradient border */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    cursor: default;
+}
+
+/* Hover State: The "Pop" */
 .services-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.95);
+    /* Solid white on hover */
+    border-color: #818cf8;
+    /* Light Indigo border */
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        0 0 0 4px rgba(99, 102, 241, 0.1);
+    /* Glow ring */
+}
+
+/* --- CARD CONTENT --- */
+.card-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #fff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: var(--primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.services-card:hover .card-icon-wrapper {
+    transform: scale(1.1) rotate(-5deg);
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
 .services-card h3 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
 }
 
 .services-card p {
-    font-size: 15px;
-    line-height: 1.65;
-    color: #475569;
+    font-size: 16px;
+    color: #64748b;
+    /* Slate 500 */
+    line-height: 1.6;
 }
 
-@media (max-width: 900px){
+/* A faint number in the background (01, 02) for texture */
+.card-number {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(99, 102, 241, 0.05);
+    /* Very faint indigo */
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.services-card:hover .card-number {
+    color: rgba(99, 102, 241, 0.1);
+    /* Slightly darker on hover */
+}
+
+@media (max-width: 768px) {
     .services-grid {
         grid-template-columns: 1fr;
     }
 
     .services-title {
-        font-size: 28px;
+        font-size: 36px;
     }
 }
